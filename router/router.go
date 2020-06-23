@@ -25,6 +25,11 @@ func InitRouter() {
 		{
 			namespaces.GET("list", controllers.NameSpacesList)
 		}
+
+		pod := dev.Group("pod")
+		{
+			pod.GET("list", controllers.PodList)
+		}
 	}
 
 	router.Run(":8080")

@@ -81,6 +81,41 @@ func (a *OriginalK8s) GetNode() []*k8s.Node {
 	return nodes
 }
 
+func (a *OriginalK8s) GetPod() []*k8s.Pod {
+	var pods []*k8s.Pod
+	ctx, _ := context.WithCancel(context.Background())
+	podList, _ := a.clientset.CoreV1().Pods("").List(ctx, v1.ListOptions{})
+	for _, pod := range podList.Items {
+		var n k8s.Pod
+		n.Name = pod.Name
+		n.NameSpaces = pod.Namespace
+		n.Status = fmt.Sprintf("%s", pod.Status.Phase)
+
+		for _, value := range pod.OwnerReferences {
+			if value.Kind != "" {
+				n.Controlled = value.Kind
+				break
+			}
+		}
+		for _, value := range pod.Status.ContainerStatuses {
+			n.Restarts = value.RestartCount
+			break
+		}
+
+		n.Qos = fmt.Sprintf("%s", pod.Status.QOSClass)
+		t1 := time.Now()
+		sub := t1.Sub(pod.CreationTimestamp.Time)
+		if hours := sub.Hours(); hours > 0 {
+			n.Age = fmt.Sprintf("%.0f", hours/24)
+		} else {
+			n.Age = "0"
+		}
+		pods = append(pods, &n)
+	}
+
+	return pods
+}
+
 func (a *OriginalK8s) GetNameSpace() []*k8s.NameSpaces {
 	var names []*k8s.NameSpaces
 	ctx, _ := context.WithCancel(context.Background())

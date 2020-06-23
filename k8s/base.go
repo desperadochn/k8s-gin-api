@@ -12,6 +12,16 @@ type Node struct {
 	Conditions string `json:"conditions"`
 }
 
+type Pod struct {
+	Name       string `json:"name"`
+	NameSpaces string `json:"name_spaces"`
+	Restarts    int32    `json:"restarts"`
+	Controlled string `json:"controlled"`
+	Qos        string `json:"qos"`
+	Age        string `json:"age"`
+	Status     string `json:"status"`
+}
+
 type NameSpaces struct {
 	Name   string            `json:"name"`
 	Labels map[string]string `json:"labels"`
@@ -25,5 +35,6 @@ type K8s interface {
 	Init(string, string, string, string)
 	TestConnect() error
 	GetNode() []*Node
+	GetPod() []*Pod
 	GetNameSpace() []*NameSpaces
 }
