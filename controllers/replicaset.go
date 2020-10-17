@@ -5,28 +5,28 @@ import (
 	"jarvis_server/k8s"
 )
 
-func PodList(c *gin.Context) {
+func ReplicasetLister(c *gin.Context) {
 	instance, _ := k8s.DefaultManager.K8s("OriginalK8s")
-	pod := instance.GetPod()
+	replicasets := instance.GetReplicaset()
 
 	c.JSON(200, gin.H{
 		"code": 20000,
 		"data": map[string]interface{}{
 			"total": 11111,
-			"items": pod,
+			"items":replicasets,
 		},
 	})
 }
-func NamespacedPodLister(c *gin.Context)  {
+
+func NamespacedReplicasetLister(c *gin.Context)  {
 	instance, _ := k8s.DefaultManager.K8s("OriginalK8s")
 	namespace := c.PostForm("namespace")
-	pod := instance.ListNamespacePod(namespace)
-
+	replicasets := instance.GetNamespaceReplicaset(namespace)
 	c.JSON(200,gin.H{
-		"code":2000,
-		"data": map[string]interface{} {
-			"total":1111,
-			"data": pod,
+		"code":200,
+		"data":map[string]interface{}{
+			"total": 11111,
+			"items":replicasets,
 		},
 	})
 }

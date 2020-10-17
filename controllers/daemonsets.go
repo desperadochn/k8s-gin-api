@@ -5,28 +5,28 @@ import (
 	"jarvis_server/k8s"
 )
 
-func PodList(c *gin.Context) {
+func DaemonsetsLister(c *gin.Context) {
 	instance, _ := k8s.DefaultManager.K8s("OriginalK8s")
-	pod := instance.GetPod()
+	daemonset := instance.GetDaemonsets()
 
 	c.JSON(200, gin.H{
 		"code": 20000,
 		"data": map[string]interface{}{
 			"total": 11111,
-			"items": pod,
+			"items":daemonset,
 		},
 	})
 }
-func NamespacedPodLister(c *gin.Context)  {
+
+func NamespacedDaemonsetsLister(c *gin.Context)  {
 	instance, _ := k8s.DefaultManager.K8s("OriginalK8s")
 	namespace := c.PostForm("namespace")
-	pod := instance.ListNamespacePod(namespace)
-
+	daemonset := instance.GetNamspacedDaemonsets(namespace)
 	c.JSON(200,gin.H{
-		"code":2000,
-		"data": map[string]interface{} {
-			"total":1111,
-			"data": pod,
+		"code":200,
+		"data":map[string]interface{}{
+			"total": 11111,
+			"items":daemonset,
 		},
 	})
 }

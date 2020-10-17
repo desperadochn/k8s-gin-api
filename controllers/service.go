@@ -5,28 +5,29 @@ import (
 	"jarvis_server/k8s"
 )
 
-func PodList(c *gin.Context) {
+func ServiceList(c *gin.Context) {
 	instance, _ := k8s.DefaultManager.K8s("OriginalK8s")
-	pod := instance.GetPod()
+	service := instance.Getservice()
 
 	c.JSON(200, gin.H{
 		"code": 20000,
 		"data": map[string]interface{}{
 			"total": 11111,
-			"items": pod,
+			"items":service,
 		},
 	})
 }
-func NamespacedPodLister(c *gin.Context)  {
+
+func NamespacedService(c *gin.Context)  {
 	instance, _ := k8s.DefaultManager.K8s("OriginalK8s")
 	namespace := c.PostForm("namespace")
-	pod := instance.ListNamespacePod(namespace)
+	service := instance.GetNamespacedService(namespace)
 
-	c.JSON(200,gin.H{
-		"code":2000,
-		"data": map[string]interface{} {
-			"total":1111,
-			"data": pod,
+	c.JSON(200, gin.H{
+		"code": 20000,
+		"data": map[string]interface{}{
+			"total": 11111,
+			"items":service,
 		},
 	})
 }
