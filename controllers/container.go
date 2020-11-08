@@ -7,7 +7,7 @@ import (
 
 func ContainertLister(c *gin.Context) {
 	instance, _ := k8s.DefaultManager.K8s("OriginalK8s")
-	container := instance.GetContainerName()
+	container := instance.GetDeploymentContainerName()
 	c.JSON(200, gin.H{
 		"code": 20000,
 		"data": map[string]interface{}{
@@ -24,7 +24,7 @@ func NamespaceLabelContainertLister(c *gin.Context)  {
 	//labelSelector := LabelSelector
 	label := c.PostForm("label")
 	namespace := c.PostForm("namespace")
-	container := instance.GetLabeldContainerName(label,namespace)
+	container := instance.GetLabeldDeploymentContainerName(label,namespace)
 	c.JSON(200, gin.H{
 		"code": 20000,
 		"data": map[string]interface{}{

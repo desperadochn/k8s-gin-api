@@ -126,7 +126,7 @@ func InitRouter() {
 			//}
 			container := k8s.Group("container")
 			{
-				container.GET("list",controllers.ContainertLister)
+				container.GET("deployment/list",controllers.ContainertLister)
 			}
 			job := k8s.Group("job")
 			{
@@ -151,7 +151,7 @@ func InitRouter() {
 				listNamespacedReouse.POST("role",controllers.GetNamespacedRoles)
 				listNamespacedReouse.POST("rolebinding",controllers.GetNamespacedRolebindings)
 				listNamespacedReouse.POST("replicaset",controllers.NamespacedReplicasetLister)
-				listNamespacedReouse.POST("container",controllers.NamespaceLabelContainertLister)
+				listNamespacedReouse.POST("deployment/container",controllers.NamespaceLabelContainertLister)
 			}
 
 			info := k8s.Group("info")

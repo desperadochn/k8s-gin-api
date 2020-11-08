@@ -66,7 +66,7 @@ func (a *OriginalK8s) TestConnect() error {
 	}
 	return err
 }
-func (a *OriginalK8s)GetContainerName() []*k8s.Container  {
+func (a *OriginalK8s)GetDeploymentContainerName() []*k8s.Container  {
 	var container []*k8s.Container
 	ctx, _ := context.WithCancel(context.Background())
 	deployList, _ := a.clientset.AppsV1().Deployments("").List(ctx,v1.ListOptions{})
@@ -86,7 +86,7 @@ func (a *OriginalK8s)GetContainerName() []*k8s.Container  {
 	}
 	return container
 }
-func (a *OriginalK8s)GetLabeldContainerName(label,namespace string) []*k8s.Container {
+func (a *OriginalK8s)GetLabeldDeploymentContainerName(label,namespace string) []*k8s.Container {
 	var container []*k8s.Container
 	ctx, _ := context.WithCancel(context.Background())
 	deployList,_:= a.clientset.AppsV1().Deployments(namespace).List(ctx,v1.ListOptions{LabelSelector: label})

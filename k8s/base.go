@@ -273,6 +273,6 @@ type K8s interface {
 	GetClusterrolebinding()  []*Clusterrolebinding
 	GetReplicaset()  []*Replicaset
 	GetNamespaceReplicaset(namespace string)  []*Replicaset
-	GetContainerName() []*Container
-	GetLabeldContainerName(label,namespace string)  []*Container
+	GetDeploymentContainerName() []*Container
+	GetLabeldDeploymentContainerName(label,namespace string)  []*Container
 }
