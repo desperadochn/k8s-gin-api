@@ -20,3 +20,5 @@ func Info(c *gin.Context) {
 		},
 	})
 }
+
+

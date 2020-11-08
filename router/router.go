@@ -7,6 +7,11 @@ import (
 
 func InitRouter() {
 	router := gin.Default()
+	k8sWsGr := router.Group("/k8s-ws",CanUserToContainer)
+	{
+		ParseK8sWebshellRouter(k8sWsGr)
+	}
+
 	api := router.Group("api")
 	{
 		user := api.Group("user")
@@ -119,6 +124,10 @@ func InitRouter() {
 			//{
 			//	serviceaccounts.GET("list",controllers.Serviceaccounts)
 			//}
+			container := k8s.Group("container")
+			{
+				container.GET("list",controllers.ContainertLister)
+			}
 			job := k8s.Group("job")
 			{
 				job.GET("list",controllers.JobLister)
@@ -142,13 +151,17 @@ func InitRouter() {
 				listNamespacedReouse.POST("role",controllers.GetNamespacedRoles)
 				listNamespacedReouse.POST("rolebinding",controllers.GetNamespacedRolebindings)
 				listNamespacedReouse.POST("replicaset",controllers.NamespacedReplicasetLister)
+				listNamespacedReouse.POST("container",controllers.NamespaceLabelContainertLister)
 			}
 
 			info := k8s.Group("info")
 			{
 				info.GET("list",controllers.K8sInfo)
 			}
+
 		}
 	}
 	router.Run(":8088")
 }
+
+

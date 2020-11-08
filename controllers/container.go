@@ -5,27 +5,32 @@ import (
 	"jarvis_server/k8s"
 )
 
-func SecretList(c *gin.Context) {
+func ContainertLister(c *gin.Context) {
 	instance, _ := k8s.DefaultManager.K8s("OriginalK8s")
-	secret := instance.GetSecret()
+	container := instance.GetContainerName()
 	c.JSON(200, gin.H{
 		"code": 20000,
 		"data": map[string]interface{}{
 			"total": 11111,
-			"items":secret,
+			"items":container,
 		},
 	})
 }
 
-func NamespacedSecret(c *gin.Context)  {
+func NamespaceLabelContainertLister(c *gin.Context)  {
 	instance, _ := k8s.DefaultManager.K8s("OriginalK8s")
+	//namespace := c.PostForm("namespace")
+	//LabelSelector := c.PostForm("labelSelector")
+	//labelSelector := LabelSelector
+	label := c.PostForm("label")
 	namespace := c.PostForm("namespace")
-	secret := instance.GetNamespacedSecret(namespace)
+	container := instance.GetLabeldContainerName(label,namespace)
 	c.JSON(200, gin.H{
 		"code": 20000,
 		"data": map[string]interface{}{
 			"total": 11111,
-			"items":secret,
+			"items":container,
 		},
 	})
 }
+

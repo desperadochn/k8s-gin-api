@@ -1,6 +1,5 @@
 package k8s
 
-
 type Node struct {
 	Name       string `json:"name"`
 	CPU        string `json:"cpu"`
@@ -219,6 +218,17 @@ type Replicaset struct {
 	OwnerReferences interface{}    `json:"owner_references"`
 
 }
+
+type Container struct {
+	ContainerName interface{}     `json:"name"`
+	DeploymentName interface{}  `json:"deployment_name"`
+	Namespace interface{}   `json:"namespace"`
+	Containers interface{}   `json:"containers"`
+}
+
+
+
+
 type K8s interface {
 	Type() string
 	Name() string
@@ -263,4 +273,6 @@ type K8s interface {
 	GetClusterrolebinding()  []*Clusterrolebinding
 	GetReplicaset()  []*Replicaset
 	GetNamespaceReplicaset(namespace string)  []*Replicaset
+	GetContainerName() []*Container
+	GetLabeldContainerName(label,namespace string)  []*Container
 }

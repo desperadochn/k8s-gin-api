@@ -10,12 +10,11 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	_ "k8s.io/client-go/tools/remotecommand"
 	"k8s.io/client-go/util/homedir"
 	"path/filepath"
 	"time"
 )
-
-
 
 type OriginalK8s struct {
 	config    rest.Config
@@ -67,7 +66,33 @@ func (a *OriginalK8s) TestConnect() error {
 	}
 	return err
 }
-
+func (a *OriginalK8s)GetContainerName() []*k8s.Container  {
+	var container []*k8s.Container
+	ctx, _ := context.WithCancel(context.Background())
+	deployList, _ := a.clientset.AppsV1().Deployments("").List(ctx,v1.ListOptions{})
+	for _, deploys := range deployList.Items{
+		var n k8s.Container
+	    n.Namespace = deploys.Namespace
+	    n.DeploymentName = deploys.Name
+		n.ContainerName = deploys.Spec.Template.Spec.Containers[0].Name
+		container = append(container,&n)
+	}
+	return container
+}
+func (a *OriginalK8s)GetLabeldContainerName(label,namespace string) []*k8s.Container {
+	var container []*k8s.Container
+	ctx, _ := context.WithCancel(context.Background())
+	deployList, _:= a.clientset.AppsV1().Deployments(namespace).List(ctx,v1.ListOptions{LabelSelector: label})
+	for _, deploys := range deployList.Items{
+		var n k8s.Container
+		n.Containers = len(deploys.Spec.Template.Spec.Containers)
+		n.Namespace = deploys.Namespace
+		n.DeploymentName = deploys.Name
+		n.ContainerName = deploys.Spec.Template.Spec.Containers[1].Name
+		container = append(container,&n)
+	}
+	return container
+}
 func (a *OriginalK8s) GetNode() []*k8s.Node {
 	var nodes []*k8s.Node
 	ctx, _ := context.WithCancel(context.Background())

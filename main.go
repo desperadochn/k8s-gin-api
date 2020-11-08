@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"jarvis_server/k8s"
+	k8s_ws "jarvis_server/k8s-ws"
 	"jarvis_server/router"
 )
 
@@ -41,6 +42,13 @@ func main() {
 		logrus.SetLevel(logrus.DebugLevel)
 	} else {
 		logrus.SetLevel(logrus.InfoLevel)
+	}
+	var err error
+
+	// 创建k8s客户端
+	if k8s_ws.ClientSet, err = k8s_ws.InitClient(); err != nil {
+		fmt.Println(err)
+		return
 	}
 	go k8sInit()
 	router.InitRouter()
