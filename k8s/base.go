@@ -220,10 +220,11 @@ type Replicaset struct {
 }
 
 type Container struct {
-	ContainerName interface{}     `json:"name"`
-	DeploymentName interface{}  `json:"deployment_name"`
+	ContainerName interface{}     `json:"container_name"`
+	PodName interface{}  `json:"pod_name,omitempty"`
 	Namespace interface{}   `json:"namespace"`
 	Containers interface{}   `json:"containers"`
+	DeployNmae interface{}    `json:"deploy_nmae,omitempty"`
 }
 
 
